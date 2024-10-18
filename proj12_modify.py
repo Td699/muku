@@ -1,6 +1,6 @@
 import mysql.connector 
 from tkinter import * 
-import tkinter as tk
+
 admin= Tk()
 admin.geometry("800x800")
 admin.configure(bg='pink')
@@ -31,7 +31,7 @@ def elect(T):
         teacher_names=cursor.fetchall()
         
         for name in teacher_names:
-            button = tk.Button(elect, text=name, command=lambda n=name: print(f"Selected: {n}"))
+            button = Button(elect, text=name, command=lambda n=name: print(f"Selected: {n}"))
             button.pack(padx=10, pady=5)
     else:
         label = Label(elect, text ="Student Electoral List") 
@@ -42,7 +42,7 @@ def elect(T):
         student_names=cursor.fetchall()
         
         for name in student_names:
-            button = tk.Button(elect, text=name, command=lambda n=name: print(f"Selected: {n}"))
+            button = Button(elect, text=name, command=lambda n=name: print(f"Selected: {n}"))
             button.pack(padx=10, pady=5)
         #put buttons with voter names
         
