@@ -65,6 +65,13 @@ def choice():
     btn3 = Button(final, text ="Done", command = final.destroy )
     btn3.pack(pady = 10)
 
+def result():
+    result = Toplevel(admin)
+    result.title('Results')
+    result.geometry("800x800")
+    result.configure(bg='pink')
+    label = Label(result, text ="The Final Results Are: ") 
+    label.pack(pady = 10)
 
 
 label = Label(admin, text='Choose teacher or student') 
@@ -75,7 +82,8 @@ btnT = Button(admin, text ="Teacher Electoral List", command =lambda:elect(T=Tru
 btnT.pack(pady = 10)
 btnS = Button(admin, text ="Student Electoral List", command =lambda:elect(T=False))
 btnS.pack(pady = 10)
-
+btnF = Button(admin, text ="Results", command =lambda:result())
+btnF.pack(pady = 10)
 
 btn2= Button(admin,text="Close",command= admin.destroy)
 btn2.pack(pady = 10)
