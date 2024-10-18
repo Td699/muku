@@ -1,4 +1,4 @@
-import mysql.connector
+import mysql.connector muku likes sex
 from tkinter import * 
 import tkinter as tk
 admin= Tk()
