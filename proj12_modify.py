@@ -3,7 +3,7 @@ from tkinter import *
 
 admin= Tk()
 admin.geometry("800x800")
-admin.configure(bg='pink')
+admin.configure(bg='blue')
 
 
 label = Label(admin, text='Admin Page') 
