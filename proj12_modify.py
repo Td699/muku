@@ -20,7 +20,9 @@ def elect(T):
     elect.configure(bg='pink')
     label = Label(elect, text ="Electoral List") 
     label.pack(pady = 10)
-    
+    def remove_button(button):
+        button.pack_forget()
+        
     if T == True:
         #enter teacher names
         label = Label(elect, text ="Teacher Electoral List") 
@@ -31,7 +33,8 @@ def elect(T):
         teacher_names=cursor.fetchall()
         
         for name in teacher_names:
-            button = Button(elect, text=name, command=lambda n=name: print(f"Selected: {n}"))
+            button = Button(elect, text=name)
+            button.config(command=lambda b=button: [remove_button(b),choice()])
             button.pack(padx=10, pady=5)
     else:
         label = Label(elect, text ="Student Electoral List") 
@@ -42,7 +45,8 @@ def elect(T):
         student_names=cursor.fetchall()
         
         for name in student_names:
-            button = Button(elect, text=name, command=lambda n=name: print(f"Selected: {n}"))
+            button = Button(elect, text=name)
+            button.config(command=lambda b=button: [remove_button(b),choice()])
             button.pack(padx=10, pady=5)
         #put buttons with voter names
         
