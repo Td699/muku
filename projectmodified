@@ -1,0 +1,116 @@
+import mysql.connector
+from tkinter import *
+import tkinter as tk
+from PIL import Image, ImageTk
+
+# Create the main window with a slightly less wide landscape aspect ratio
+admin = Tk()
+admin.geometry("1400x800")  # Set to a less wide landscape resolution
+
+# Load the background image using Pillow
+background_image = Image.open("background.jpg")  # Replace with the path to your background image
+background_image = background_image.resize((1400, 800), Image.Resampling.LANCZOS)  # Resize to fit the new window
+background_photo = ImageTk.PhotoImage(background_image)
+
+# Create a Label to display the background image
+background_label = Label(admin, image=background_photo)
+background_label.place(x=0, y=0, relwidth=1, relheight=1)
+
+# Frame to organize widgets neatly
+frame = Frame(admin, bg='#f0f0f0', bd=5, relief=RIDGE)
+frame.place(relx=0.5, rely=0.5, anchor=CENTER)
+
+# Add a title label
+label = Label(frame, text='Admin Page', font=("Arial", 26, "bold"), bg="lightblue", padx=20, pady=10, relief=GROOVE, bd=4)
+label.pack(pady=20)
+
+def elect(T):
+    elect = Toplevel(admin)
+    elect.title("Electoral List")
+    elect.geometry("1400x800")
+
+    # Load and display background image for Toplevel window
+    elect_background_image = Image.open("background.jpg")
+    elect_background_image = elect_background_image.resize((1400, 800), Image.Resampling.LANCZOS)
+    elect_background_photo = ImageTk.PhotoImage(elect_background_image)
+    elect_background_label = Label(elect, image=elect_background_photo)
+    elect_background_label.place(x=0, y=0, relwidth=1, relheight=1)
+
+    # Frame for organizing the electoral list content with rounded corner effect
+    frame_elect = Frame(elect, bg='#ffffff', bd=7, relief=SOLID)
+    frame_elect.place(relx=0.5, rely=0.5, anchor=CENTER)
+
+    # Title for the list
+    label_title = Label(frame_elect, text="Electoral List", font=("Arial", 24, "bold"), bg="#ADD8E6", padx=30, pady=15, relief=RIDGE, bd=4)
+    label_title.pack(pady=20)
+
+    # Add a label to indicate if it's a teacher or student list
+    if T:
+        label = Label(frame_elect, text="Teacher Electoral List", font=("Arial", 20, "italic"), bg="#E6E6FA", padx=20, pady=10, relief=GROOVE, bd=3)
+        label.pack(pady=15)
+        conn = mysql.connector.connect(host='localhost', user='root', password="9535245671", database='teacher_db')
+        cursor = conn.cursor()
+        cursor.execute("SELECT name FROM teachers")
+        teacher_names = cursor.fetchall()
+
+        for name in teacher_names:
+            button = tk.Button(frame_elect, text=name, font=("Arial", 14), bg="#4CAF50", fg="white", bd=3, relief=RAISED, padx=20, pady=8, cursor="hand2")
+            button.pack(padx=20, pady=5, fill=X)
+    else:
+        label = Label(frame_elect, text="Student Electoral List", font=("Arial", 20, "italic"), bg="#E6E6FA", padx=20, pady=10, relief=GROOVE, bd=3)
+        label.pack(pady=15)
+        conn = mysql.connector.connect(host='localhost', user='root', password="9535245671", database='student_db')
+        cursor = conn.cursor()
+        cursor.execute("SELECT name FROM students")
+        student_names = cursor.fetchall()
+
+        for name in student_names:
+            button = tk.Button(frame_elect, text=name, font=("Arial", 14), bg="#4CAF50", fg="white", bd=3, relief=RAISED, padx=20, pady=8, cursor="hand2")
+            button.pack(padx=20, pady=5, fill=X)
+
+    # Buttons to proceed or close the window
+    btn2 = Button(frame_elect, text="Voter Name", command=choice, font=("Arial", 16, "bold"), bg="#2196F3", fg="white", padx=15, pady=8, relief=RAISED, cursor="hand2")
+    btn2.pack(pady=20)
+
+    btn3 = Button(frame_elect, text='All Done', command=elect.destroy, font=("Arial", 16, "bold"), bg="#f44336", fg="white", padx=15, pady=8, relief=RAISED, cursor="hand2")
+    btn3.pack(pady=10)
+
+    elect_background_label.image = elect_background_photo
+
+def choice():
+    final = Toplevel(admin)
+    final.title("Electoral List")
+    final.geometry("1400x800")
+
+    # Load and display background image for the choice window
+    final_background_image = Image.open("background.jpg")
+    final_background_image = final_background_image.resize((1400, 800), Image.Resampling.LANCZOS)
+    final_background_photo = ImageTk.PhotoImage(final_background_image)
+    final_background_label = Label(final, image=final_background_photo)
+    final_background_label.place(x=0, y=0, relwidth=1, relheight=1)
+
+    # Frame for choice content
+    frame_final = Frame(final, bg='#ffffff', bd=7, relief=SOLID)
+    frame_final.place(relx=0.5, rely=0.5, anchor=CENTER)
+
+    label = Label(frame_final, text="Make Your Choice", font=("Arial", 24, "bold"), bg="#ADD8E6", padx=30, pady=15, relief=RIDGE, bd=4)
+    label.pack(pady=20)
+
+    btn3 = Button(frame_final, text="Done", command=final.destroy, font=("Arial", 16, "bold"), bg="#f44336", fg="white", padx=15, pady=8, relief=RAISED, cursor="hand2")
+    btn3.pack(pady=10)
+
+    final_background_label.image = final_background_photo
+
+label = Label(frame, text='Choose Teacher or Student', font=("Arial", 22), bg="lightblue", padx=30, pady=15, relief=GROOVE, bd=4)
+label.pack(pady=20)
+
+btnT = Button(frame, text="Teacher Electoral List", command=lambda: elect(T=True), font=("Arial", 16), bg="#4CAF50", fg="white", padx=15, pady=8, relief=RAISED, cursor="hand2")
+btnT.pack(pady=10)
+btnS = Button(frame, text="Student Electoral List", command=lambda: elect(T=False), font=("Arial", 16), bg="#4CAF50", fg="white", padx=15, pady=8, relief=RAISED, cursor="hand2")
+btnS.pack(pady=10)
+
+btn2 = Button(frame, text="Close", command=admin.destroy, font=("Arial", 16), bg="#f44336", fg="white", padx=15, pady=8, relief=RAISED, cursor="hand2")
+btn2.pack(pady=10)
+
+# Start the Tkinter event loop
+mainloop()
